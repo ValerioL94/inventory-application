@@ -1,6 +1,10 @@
 const Album = require('../models/album');
 const asyncHandler = require('express-async-handler');
 
+exports.index = asyncHandler(async (req, res, next) => {
+  res.send('WiP: Site Home Page');
+});
+
 exports.album_list = asyncHandler(async (req, res, next) => {
   res.send('WiP: Album list');
 });
