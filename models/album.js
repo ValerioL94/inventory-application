@@ -7,6 +7,7 @@ const AlbumSchema = new Schema({
   description: { type: String, minLength: 1, maxLength: 200, required: true },
   band: { type: Schema.Types.ObjectId, ref: 'Band' },
   price: { type: Number, required: true, min: 1, max: 50 },
+  format: { type: String, required: true, minLength: 1, maxLength: 100 },
   stock: { type: Number, required: true },
 });
 
