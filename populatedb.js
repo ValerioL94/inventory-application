@@ -1,38 +1,30 @@
 #! /usr/bin/env node
 
-console.log(
-  'This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"'
-);
-
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 
-const Book = require("./models/book");
-const Author = require("./models/author");
-const Genre = require("./models/genre");
-const BookInstance = require("./models/bookinstance");
+const Album = require('./models/album');
+const Band = require('./models/band');
+const Genre = require('./models/genre');
 
 const genres = [];
-const authors = [];
-const books = [];
-const bookinstances = [];
+const bands = [];
+const albums = [];
 
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
+const mongoose = require('mongoose');
 
 const mongoDB = userArgs[0];
 
 main().catch((err) => console.log(err));
 
 async function main() {
-  console.log("Debug: About to connect");
+  console.log('Debug: About to connect');
   await mongoose.connect(mongoDB);
-  console.log("Debug: Should be connected?");
+  console.log('Debug: Should be connected?');
   await createGenres();
-  await createAuthors();
-  await createBooks();
-  await createBookInstances();
-  console.log("Debug: Closing mongoose");
+  await createBands();
+  await createAlbums();
+  console.log('Debug: Closing mongoose');
   mongoose.connection.close();
 }
 
@@ -46,165 +38,192 @@ async function genreCreate(index, name) {
   console.log(`Added genre: ${name}`);
 }
 
-async function authorCreate(index, first_name, family_name, d_birth, d_death) {
-  const authordetail = { first_name: first_name, family_name: family_name };
-  if (d_birth != false) authordetail.date_of_birth = d_birth;
-  if (d_death != false) authordetail.date_of_death = d_death;
+async function bandCreate(index, name, genre, origin, formed_in, disbanded_in) {
+  const banddetail = {
+    name: name,
+    genre: genre,
+    origin: origin,
+    formed_in: formed_in,
+    disbanded_in: disbanded_in,
+  };
+  if (origin != false) banddetail.origin = origin;
+  if (formed_in != false) banddetail.formed_in = formed_in;
+  if (disbanded_in != false) banddetail.disbanded_in = disbanded_in;
 
-  const author = new Author(authordetail);
+  const band = new Band(banddetail);
 
-  await author.save();
-  authors[index] = author;
-  console.log(`Added author: ${first_name} ${family_name}`);
+  await band.save();
+  bands[index] = band;
+  console.log(`Added band: ${name}`);
 }
 
-async function bookCreate(index, title, summary, isbn, author, genre) {
-  const bookdetail = {
+async function albumCreate(
+  index,
+  title,
+  description,
+  band,
+  price,
+  format,
+  stock
+) {
+  const albumdetail = {
     title: title,
-    summary: summary,
-    author: author,
-    isbn: isbn,
+    description: description,
+    band: band,
+    price: price,
+    format: format,
+    stock: stock,
   };
-  if (genre != false) bookdetail.genre = genre;
+  if (description != false) albumdetail.description = description;
 
-  const book = new Book(bookdetail);
-  await book.save();
-  books[index] = book;
-  console.log(`Added book: ${title}`);
-}
-
-async function bookInstanceCreate(index, book, imprint, due_back, status) {
-  const bookinstancedetail = {
-    book: book,
-    imprint: imprint,
-  };
-  if (due_back != false) bookinstancedetail.due_back = due_back;
-  if (status != false) bookinstancedetail.status = status;
-
-  const bookinstance = new BookInstance(bookinstancedetail);
-  await bookinstance.save();
-  bookinstances[index] = bookinstance;
-  console.log(`Added bookinstance: ${imprint}`);
+  const album = new Album(albumdetail);
+  await album.save();
+  albums[index] = album;
+  console.log(`Added album: ${title}`);
 }
 
 async function createGenres() {
-  console.log("Adding genres");
+  console.log('Adding genres');
   await Promise.all([
-    genreCreate(0, "Fantasy"),
-    genreCreate(1, "Science Fiction"),
-    genreCreate(2, "French Poetry"),
+    genreCreate(0, 'Nu metal'),
+    genreCreate(1, 'Alternative metal'),
+    genreCreate(2, 'Thrash metal'),
+    genreCreate(3, 'Progressive metal'),
+    genreCreate(4, 'Melodic death metal'),
+    genreCreate(5, 'Hard rock'),
+    genreCreate(6, 'Power metal'),
+    genreCreate(7, 'Symphonic metal'),
+    genreCreate(8, 'Speed metal'),
   ]);
 }
 
-async function createAuthors() {
-  console.log("Adding authors");
+async function createBands() {
+  console.log('Adding bands');
   await Promise.all([
-    authorCreate(0, "Patrick", "Rothfuss", "1973-06-06", false),
-    authorCreate(1, "Ben", "Bova", "1932-11-8", false),
-    authorCreate(2, "Isaac", "Asimov", "1920-01-02", "1992-04-06"),
-    authorCreate(3, "Bob", "Billings", false, false),
-    authorCreate(4, "Jim", "Jones", "1971-12-16", false),
-  ]);
-}
-
-async function createBooks() {
-  console.log("Adding Books");
-  await Promise.all([
-    bookCreate(0,
-      "The Name of the Wind (The Kingkiller Chronicle, #1)",
-      "I have stolen princesses back from sleeping barrow kings. I burned down the town of Trebon. I have spent the night with Felurian and left with both my sanity and my life. I was expelled from the University at a younger age than most people are allowed in. I tread paths by moonlight that others fear to speak of during day. I have talked to Gods, loved women, and written songs that make the minstrels weep.",
-      "9781473211896",
-      authors[0],
-      [genres[0]]
+    bandCreate(
+      0,
+      'Sonata Arctica',
+      [genres[6], genres[7], genres[3]],
+      'Kemi, Finland',
+      1995,
+      false
     ),
-    bookCreate(1,
-      "The Wise Man's Fear (The Kingkiller Chronicle, #2)",
-      "Picking up the tale of Kvothe Kingkiller once again, we follow him into exile, into political intrigue, courtship, adventure, love and magic... and further along the path that has turned Kvothe, the mightiest magician of his age, a legend in his own time, into Kote, the unassuming pub landlord.",
-      "9788401352836",
-      authors[0],
-      [genres[0]]
+    bandCreate(
+      1,
+      'DragonForce',
+      [genres[6], genres[8], genres[3]],
+      'London, England',
+      1999,
+      false
     ),
-    bookCreate(2,
-      "The Slow Regard of Silent Things (Kingkiller Chronicle)",
-      "Deep below the University, there is a dark place. Few people know of it: a broken web of ancient passageways and abandoned rooms. A young woman lives there, tucked among the sprawling tunnels of the Underthing, snug in the heart of this forgotten place.",
-      "9780756411336",
-      authors[0],
-      [genres[0]]
+    bandCreate(
+      2,
+      'Stratovarius',
+      [genres[6], genres[7], genres[3]],
+      'Helsinki, Finland',
+      1984,
+      false
     ),
-    bookCreate(3,
-      "Apes and Angels",
-      "Humankind headed out to the stars not for conquest, nor exploration, nor even for curiosity. Humans went to the stars in a desperate crusade to save intelligent life wherever they found it. A wave of death is spreading through the Milky Way galaxy, an expanding sphere of lethal gamma ...",
-      "9780765379528",
-      authors[1],
-      [genres[1]]
+    bandCreate(
+      3,
+      'Soilwork',
+      [genres[4], genres[1]],
+      '	Helsingborg, Sweden',
+      1995,
+      false
     ),
-    bookCreate(4,
-      "Death Wave",
-      "In Ben Bova's previous novel New Earth, Jordan Kell led the first human mission beyond the solar system. They discovered the ruins of an ancient alien civilization. But one alien AI survived, and it revealed to Jordan Kell that an explosion in the black hole at the heart of the Milky Way galaxy has created a wave of deadly radiation, expanding out from the core toward Earth. Unless the human race acts to save itself, all life on Earth will be wiped out...",
-      "9780765379504",
-      authors[1],
-      [genres[1]]
+    bandCreate(
+      4,
+      'System of a Down',
+      [genres[1], genres[0], genres[5], genres[3]],
+      '	Glendale, California, U.S.',
+      1994,
+      false
     ),
-    bookCreate(5,
-      "Test Book 1",
-      "Summary of test book 1",
-      "ISBN111111",
-      authors[4],
-      [genres[0], genres[1]]
+    bandCreate(
+      5,
+      'Mudvayne',
+      [genres[1], genres[0], genres[3], genres[5]],
+      '	Peoria, Illinois, U.S.',
+      1996,
+      false
     ),
-    bookCreate(6,
-      "Test Book 2",
-      "Summary of test book 2",
-      "ISBN222222",
-      authors[4],
+    bandCreate(
+      6,
+      'Sylosis',
+      [genres[2], genres[3], genres[4]],
+      'Reading, Berkshire, England',
+      2000,
       false
     ),
   ]);
 }
 
-async function createBookInstances() {
-  console.log("Adding authors");
+async function createAlbums() {
+  console.log('Adding albums');
   await Promise.all([
-    bookInstanceCreate(0, books[0], "London Gollancz, 2014.", false, "Available"),
-    bookInstanceCreate(1, books[1], " Gollancz, 2011.", false, "Loaned"),
-    bookInstanceCreate(2, books[2], " Gollancz, 2015.", false, false),
-    bookInstanceCreate(3,
-      books[3],
-      "New York Tom Doherty Associates, 2016.",
-      false,
-      "Available"
+    albumCreate(
+      0,
+      'Silence',
+      'Silence is the second full-length album by Finnish power metal band Sonata Arctica, released in 2001 through Spinefarm Records.',
+      bands[0],
+      20,
+      'CD',
+      4
     ),
-    bookInstanceCreate(4,
-      books[3],
-      "New York Tom Doherty Associates, 2016.",
-      false,
-      "Available"
+    albumCreate(
+      1,
+      'Ultra Beatdown',
+      'Ultra Beatdown is the fourth studio album by British power metal band DragonForce, released on 20 August 2008 in Japan through JVC and on 26 August 2008 worldwide through Roadrunner Records and Spinefarm Records.',
+      bands[1],
+      40,
+      'CD',
+      5
     ),
-    bookInstanceCreate(5,
-      books[3],
-      "New York Tom Doherty Associates, 2016.",
-      false,
-      "Available"
+    albumCreate(
+      2,
+      'Eternal',
+      'Eternal is the fifteenth album by Finnish power metal band Stratovarius, released on 11 September 2015 (Europe) and 18 September (United States).',
+      bands[2],
+      30,
+      'Vinyl',
+      6
     ),
-    bookInstanceCreate(6,
-      books[4],
-      "New York, NY Tom Doherty Associates, LLC, 2015.",
-      false,
-      "Available"
+    albumCreate(
+      3,
+      'The Living Infinite',
+      "The Living Infinite is the ninth studio album by Swedish melodic death metal band Soilwork, released on 27 February 2013 in Asia, 1 March 2013 in Europe, on 4 March 2013 in the UK and on 5 March 2013 in the US. It is the band's first double album.",
+      bands[3],
+      42,
+      '2 CDs',
+      10
     ),
-    bookInstanceCreate(7,
-      books[4],
-      "New York, NY Tom Doherty Associates, LLC, 2015.",
-      false,
-      "Maintenance"
+    albumCreate(
+      4,
+      'Toxicity',
+      'Toxicity is the second studio album by the American heavy metal band System of a Down, released on September 4, 2001, by American Recordings and Columbia Records.',
+      bands[4],
+      15,
+      'CD',
+      22
     ),
-    bookInstanceCreate(8,
-      books[4],
-      "New York, NY Tom Doherty Associates, LLC, 2015.",
-      false,
-      "Loaned"
+    albumCreate(
+      5,
+      'L.D. 50 ',
+      "L.D. 50 is the debut studio album by American heavy metal band Mudvayne. Released on August 22, 2000, it is the band's first release on Epic Records, following the independently-released extended play Kill, I Oughtta.",
+      bands[5],
+      40,
+      'CD',
+      3
     ),
-    bookInstanceCreate(9, books[0], "Imprint XXX2", false, false),
-    bookInstanceCreate(10, books[1], "Imprint XXX3", false, false),
+    albumCreate(
+      6,
+      'Cycle of Suffering',
+      'Cycle of Suffering is the fifth studio album by British heavy metal band Sylosis, released on 7 February 2020 through Nuclear Blast.',
+      bands[6],
+      18,
+      'CD',
+      7
+    ),
   ]);
 }
