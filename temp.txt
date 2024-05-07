@@ -1,0 +1,21 @@
+cd: {
+    title: string,
+    description: string,
+    band: string,
+    price: number,
+    stock: number
+}
+cd.virtual.url
+
+band: {
+    name: string,
+    genre: string,
+    origin: string,
+    formed_in_year: number,
+}
+band.virtual.url
+
+genre: {
+    name: string,
+}
+genre.virtual.url
