@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 exports.band_list = asyncHandler(async (req, res, next) => {
   const allBands = await Band.find().sort({ name: 1 }).exec();
-  res.render('band_list', { title: 'Band list', band_list: allBands });
+  res.render('band_list', { title: 'Band List', band_list: allBands });
 });
 
 exports.band_detail = asyncHandler(async (req, res, next) => {

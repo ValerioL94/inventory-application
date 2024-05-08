@@ -22,7 +22,7 @@ exports.album_list = asyncHandler(async (req, res, next) => {
     .sort({ title: 1 })
     .populate('band')
     .exec();
-  res.render('album_list', { title: 'Album list', album_list: allAlbums });
+  res.render('album_list', { title: 'Album List', album_list: allAlbums });
 });
 
 exports.album_detail = asyncHandler(async (req, res, next) => {
