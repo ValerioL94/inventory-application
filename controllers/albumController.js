@@ -18,7 +18,11 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.album_list = asyncHandler(async (req, res, next) => {
-  res.send('WiP: Album list');
+  const allAlbums = await Album.find({}, 'title band')
+    .sort({ title: 1 })
+    .populate('band')
+    .exec();
+  res.render('album_list', { title: 'Album list', album_list: allAlbums });
 });
 
 exports.album_detail = asyncHandler(async (req, res, next) => {

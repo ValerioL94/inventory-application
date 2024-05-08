@@ -1,0 +1,12 @@
+<%- contentFor('page') %>
+
+<h2><%= title %></h2>
+<% if (album_list.length) { %>
+<ul class="page-list">
+  <% album_list.forEach(album => { %>
+  <li><a href="<%= album.url %>"><%= album.title %></a> (<%= album.band.name %>)</li>
+  <% }) %>
+</ul>
+<% } else { %>
+<p>There are no albums.</p>
+<%} %>

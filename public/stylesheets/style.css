@@ -52,6 +52,13 @@ nav li {
 #dynamic-page {
   padding: 25px;
 }
+
+.page-list li {
+  margin: 15px 0;
+}
+.page-list a {
+  text-decoration: none;
+}
 footer {
   display: flex;
   align-items: center;
