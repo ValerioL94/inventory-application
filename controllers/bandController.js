@@ -2,7 +2,8 @@ const Band = require('../models/band');
 const asyncHandler = require('express-async-handler');
 
 exports.band_list = asyncHandler(async (req, res, next) => {
-  res.send('WiP: Band list');
+  const allBands = await Band.find().sort({ name: 1 }).exec();
+  res.render('band_list', { title: 'Band list', band_list: allBands });
 });
 
 exports.band_detail = asyncHandler(async (req, res, next) => {

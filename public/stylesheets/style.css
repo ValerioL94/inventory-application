@@ -33,7 +33,7 @@ main {
   display: flex;
 }
 #sidebar {
-  width: 150px;
+  width: 250px;
   padding: 25px;
   margin-right: 25px;
 }
@@ -47,6 +47,10 @@ nav a {
 }
 nav li {
   margin: 25px 0;
+}
+
+hr {
+  margin-right: 100px;
 }
 
 #dynamic-page {
