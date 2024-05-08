@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const mongoDB = process.env.MONGODB_URI;
+const expressLayouts = require('express-ejs-layouts');
 
 const indexRouter = require('./routes/index');
 const catalogRouter = require('./routes/catalog');
@@ -18,6 +19,7 @@ async function main() {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(expressLayouts);
 
 app.use(logger('dev'));
 app.use(express.json());

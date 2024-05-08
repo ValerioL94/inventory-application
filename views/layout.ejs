@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <div id="content">
+    <header>
+      <h1>Inventory Application</h1>
+    </header>
+    <main>
+      <aside>
+        <nav>
+          <ul>
+            <li><a href="/catalog">Home</a></li>
+            <li><a href="/catalog/genres">All genres</a></li>
+            <li><a href="/catalog/bands">All bands</a></li>
+            <li><a href="/catalog/albums">All albums</a></li>
+            <hr>
+            <li><a href="/catalog/genre/create">Add new genre</a></li>
+            <li><a href="/catalog/band/create">Add new band</a></li>
+            <li><a href="/catalog/album/create">Add new album</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <section>
+        <%- page %>
+      </section>
+    </main>
+    <footer>
+      <p>Copyright © 2024 ValerioL94</p>
+      <a href="https://github.com/ValerioL94">
+        <img className="logo" src="/images/github-mark-white.svg" alt="github logo" />
+      </a>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -1,8 +1,20 @@
 const Album = require('../models/album');
+const Band = require('../models/band');
+const Genre = require('../models/genre');
 const asyncHandler = require('express-async-handler');
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send('WiP: Site Home Page');
+  const [allAlbums, allBands, allGenres] = await Promise.all([
+    Album.countDocuments({}).exec(),
+    Band.countDocuments({}).exec(),
+    Genre.countDocuments({}).exec(),
+  ]);
+  res.render('index', {
+    title: 'Homepage',
+    album_count: allAlbums,
+    band_count: allBands,
+    genre_count: allGenres,
+  });
 });
 
 exports.album_list = asyncHandler(async (req, res, next) => {
