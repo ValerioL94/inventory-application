@@ -42,9 +42,6 @@ async function bandCreate(index, name, genre, origin, formed_in, disbanded_in) {
   const banddetail = {
     name: name,
     genre: genre,
-    origin: origin,
-    formed_in: formed_in,
-    disbanded_in: disbanded_in,
   };
   if (origin != false) banddetail.origin = origin;
   if (formed_in != false) banddetail.formed_in = formed_in;
@@ -62,14 +59,15 @@ async function albumCreate(
   title,
   description,
   band,
+  genre,
   price,
   format,
   stock
 ) {
   const albumdetail = {
     title: title,
-    description: description,
     band: band,
+    genre: genre,
     price: price,
     format: format,
     stock: stock,
@@ -85,15 +83,19 @@ async function albumCreate(
 async function createGenres() {
   console.log('Adding genres');
   await Promise.all([
-    genreCreate(0, 'Nu metal'),
-    genreCreate(1, 'Alternative metal'),
-    genreCreate(2, 'Thrash metal'),
-    genreCreate(3, 'Progressive metal'),
-    genreCreate(4, 'Melodic death metal'),
-    genreCreate(5, 'Hard rock'),
-    genreCreate(6, 'Power metal'),
-    genreCreate(7, 'Symphonic metal'),
-    genreCreate(8, 'Speed metal'),
+    genreCreate(0, 'Heavy metal'),
+    genreCreate(1, 'Nu metal'),
+    genreCreate(2, 'Alternative metal'),
+    genreCreate(3, 'Math metal'),
+    genreCreate(4, 'Thrash metal'),
+    genreCreate(5, 'Progressive metal'),
+    genreCreate(6, 'Melodic death metal'),
+    genreCreate(7, 'Metalcore'),
+    genreCreate(8, 'Hard rock'),
+    genreCreate(9, 'Power metal'),
+    genreCreate(10, 'Symphonic metal'),
+    genreCreate(11, 'Speed metal'),
+    genreCreate(12, 'Neoclassical metal'),
   ]);
 }
 
@@ -103,7 +105,7 @@ async function createBands() {
     bandCreate(
       0,
       'Sonata Arctica',
-      [genres[6], genres[7], genres[3]],
+      [genres[9], genres[10], genres[5]],
       'Kemi, Finland',
       1995,
       false
@@ -111,7 +113,7 @@ async function createBands() {
     bandCreate(
       1,
       'DragonForce',
-      [genres[6], genres[8], genres[3]],
+      [genres[9], genres[11], genres[5]],
       'London, England',
       1999,
       false
@@ -119,7 +121,7 @@ async function createBands() {
     bandCreate(
       2,
       'Stratovarius',
-      [genres[6], genres[7], genres[3]],
+      [genres[9], genres[12], genres[10], genres[5]],
       'Helsinki, Finland',
       1984,
       false
@@ -127,7 +129,7 @@ async function createBands() {
     bandCreate(
       3,
       'Soilwork',
-      [genres[4], genres[1]],
+      [genres[6], genres[2]],
       '	Helsingborg, Sweden',
       1995,
       false
@@ -135,7 +137,7 @@ async function createBands() {
     bandCreate(
       4,
       'System of a Down',
-      [genres[1], genres[0], genres[5], genres[3]],
+      [genres[2], genres[1], genres[8], genres[5]],
       '	Glendale, California, U.S.',
       1994,
       false
@@ -143,7 +145,7 @@ async function createBands() {
     bandCreate(
       5,
       'Mudvayne',
-      [genres[1], genres[0], genres[3], genres[5]],
+      [genres[2], genres[1], genres[5], genres[8]],
       '	Peoria, Illinois, U.S.',
       1996,
       false
@@ -151,7 +153,7 @@ async function createBands() {
     bandCreate(
       6,
       'Sylosis',
-      [genres[2], genres[3], genres[4]],
+      [genres[4], genres[5], genres[6], genres[7]],
       'Reading, Berkshire, England',
       2000,
       false
@@ -164,9 +166,10 @@ async function createAlbums() {
   await Promise.all([
     albumCreate(
       0,
-      'Silence',
-      'Silence is the second full-length album by Finnish power metal band Sonata Arctica, released in 2001 through Spinefarm Records.',
+      'Unia',
+      'Unia (English: Dreams), released on 25 May 2007, is the fifth full-length studio album by the power metal band Sonata Arctica, following the album Reckoning Night.',
       bands[0],
+      [genres[9], genres[10], genres[5]],
       20,
       'CD',
       4
@@ -176,15 +179,17 @@ async function createAlbums() {
       'Ultra Beatdown',
       'Ultra Beatdown is the fourth studio album by British power metal band DragonForce, released on 20 August 2008 in Japan through JVC and on 26 August 2008 worldwide through Roadrunner Records and Spinefarm Records.',
       bands[1],
+      genres[9],
       40,
       'CD',
       5
     ),
     albumCreate(
       2,
-      'Eternal',
-      'Eternal is the fifteenth album by Finnish power metal band Stratovarius, released on 11 September 2015 (Europe) and 18 September (United States).',
+      'Nemesis',
+      'Nemesis is the fourteenth studio album by power metal band Stratovarius, released on 22 February 2013 through Edel AG.',
       bands[2],
+      [genres[9], genres[10]],
       30,
       'Vinyl',
       6
@@ -194,6 +199,7 @@ async function createAlbums() {
       'The Living Infinite',
       "The Living Infinite is the ninth studio album by Swedish melodic death metal band Soilwork, released on 27 February 2013 in Asia, 1 March 2013 in Europe, on 4 March 2013 in the UK and on 5 March 2013 in the US. It is the band's first double album.",
       bands[3],
+      genres[6],
       42,
       '2 CDs',
       10
@@ -203,6 +209,7 @@ async function createAlbums() {
       'Toxicity',
       'Toxicity is the second studio album by the American heavy metal band System of a Down, released on September 4, 2001, by American Recordings and Columbia Records.',
       bands[4],
+      [genres[2], genres[1]],
       15,
       'CD',
       22
@@ -212,8 +219,9 @@ async function createAlbums() {
       'L.D. 50 ',
       "L.D. 50 is the debut studio album by American heavy metal band Mudvayne. Released on August 22, 2000, it is the band's first release on Epic Records, following the independently-released extended play Kill, I Oughtta.",
       bands[5],
+      [genres[0], genres[1], genres[2], genres[3]],
       40,
-      'CD',
+      'Vinyl',
       3
     ),
     albumCreate(
@@ -221,6 +229,7 @@ async function createAlbums() {
       'Cycle of Suffering',
       'Cycle of Suffering is the fifth studio album by British heavy metal band Sylosis, released on 7 February 2020 through Nuclear Blast.',
       bands[6],
+      [genres[4], genres[5], genres[6], genres[7]],
       18,
       'CD',
       7
