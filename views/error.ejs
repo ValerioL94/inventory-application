@@ -2,4 +2,8 @@
 
 <h1><%= message %></h1>
 <h2><%= error.status %></h2>
-<p>This page does not exist.</p>
+<% if (error.status===404) { %>
+<p class="errors-list">This page does not exist</p>
+<% } else { %>
+<pre><%= error.stack %></pre>
+<% } %>

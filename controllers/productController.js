@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const { category_list } = require('./categoryController');
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [allCategories, allProducts] = await Promise.all([
@@ -36,12 +37,66 @@ exports.product_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.product_create_get = asyncHandler(async (req, res, next) => {
-  res.render('product_form', { title: 'New Product' });
+  const allCategories = await Category.find().sort({ name: 1 }).exec();
+  res.render('product_form', {
+    title: 'New Product',
+    categories: allCategories,
+  });
 });
 
-exports.product_create_post = asyncHandler(async (req, res, next) => {
-  res.send('WiP: product create POST');
-});
+exports.product_create_post = [
+  body('name')
+    .trim()
+    .isLength({ min: 2 })
+    .escape()
+    .withMessage('Name must contain at least 2 characters'),
+  body('description')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ max: 500 })
+    .escape()
+    .withMessage('Description must contain less than 500 characters'),
+  body('category', 'Category must not be empty')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('price', 'Minimum price 1, maximum price 100, numbers only')
+    .trim()
+    .isLength({ min: 1 })
+    .isInt({ gt: 0, lt: 101 })
+    .escape(),
+  body(
+    'stock',
+    'Minimum stock quantity 0, maximum stock quantity 100, numbers only'
+  )
+    .trim()
+    .isLength({ min: 1 })
+    .isInt({ gt: 0, lt: 101 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const product = new Product({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+    });
+    if (!errors.isEmpty()) {
+      const allCategories = await Category.find().sort({ name: 1 }).exec();
+      res.render('product_form', {
+        title: 'New Product',
+        categories: allCategories,
+        product,
+        errors: errors.array(),
+      });
+    } else {
+      await product.save();
+      res.redirect('product.url');
+    }
+  }),
+];
 
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
   res.send('WiP: product delete GET');

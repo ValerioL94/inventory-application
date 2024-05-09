@@ -1,0 +1,45 @@
+<%- contentFor('page') %>
+
+<h2><%= title %></h2>
+
+<form method="post">
+  <div class="form-group">
+    <label for="name">Name: </label>
+    <input class="form-control" type="text" id="name" placeholder="Mango" name="name" required value="<%= typeof product==='undefined' ? '' : product.name %>">
+    <label for="description">Description: </label>
+    <textarea rows="8" class="form-control" name="description" id="description" placeholder="A raw mango is 84% water, 15% carbohydrates, 1% protein, and has negligible fat. The energy value per 100g (3.5oz) serving of raw mango is 250 kJ (60 calories). Fresh mango contains only vitamin C and folate in significant amounts of the Daily Value as 44% and 11%, respectively."><%= typeof product==='undefined' ? '' : product.description %></textarea>
+    <div class="form-group">
+      <label for="category">Category: </label>
+      <select class="form-control" name="category" id="category" required>
+        <option value="">--Please select a category--</option>
+        <% categories.forEach(category => { %>
+        <% if (typeof product!=='undefined') { %>
+        <% if (category._id.toString()===product.category._id.toString()) { %>
+        <option value="<%= category._id %>" selected><%= category.name %></option>
+        <% } else { %>
+        <option value="<%= category._id %>"><%= category.name %></option>
+        <% } %>
+        <% } else { %>
+        <option value="<%= category._id %>"><%= category.name %></option>
+        <% } %>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="price">Price in euros: </label>
+      <input class="form-control" type="number" id="price" placeholder="5" name="price" required value="<%= typeof product==='undefined' ? '' : product.price %>">
+    </div>
+    <div class="form-group">
+      <label for="stock">Stock: </label>
+      <input class="form-control" type="number" id="stock" placeholder="8" name="stock" required value="<%= typeof product==='undefined' ? '' : product.stock %>">
+    </div>
+  </div>
+  <button class="form-submit" type="submit">Submit</button>
+</form>
+<% if (typeof errors!=='undefined') { %>
+<ul class="errors-list">
+  <% errors.forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>

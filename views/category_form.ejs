@@ -12,7 +12,7 @@
   <button class="form-submit" type="submit">Submit</button>
 </form>
 <% if (typeof errors!=='undefined') { %>
-<ul>
+<ul class="errors-list">
   <% errors.forEach(error => { %>
   <li><%= error.msg %></li>
   <% }) %>

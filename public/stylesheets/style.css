@@ -17,7 +17,7 @@ body {
 }
 a {
   color: rgb(70, 70, 255);
-  transition: all ease-in-out 0.25s;
+  transition: all ease-in-out 0.1s;
   text-decoration: none;
 }
 a:hover,
@@ -25,6 +25,7 @@ a:focus {
   color: blue;
   font-weight: 600;
   outline: none;
+  border-bottom: 2px solid blue;
 }
 header {
   text-align: center;
@@ -96,6 +97,7 @@ hr {
   width: 80px;
   border-radius: 5px;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 .form-submit:hover,
 .form-submit:focus {
@@ -103,6 +105,10 @@ hr {
   color: blue;
   border: 2px solid blue;
   outline: none;
+}
+.errors-list {
+  color: crimson;
+  font-weight: 600;
 }
 
 footer {
