@@ -7,8 +7,6 @@ body {
     Helvetica,
     Arial,
     sans-serif;
-  color: white;
-  background: rgb(70, 70, 70);
 }
 
 #content {
@@ -18,16 +16,18 @@ body {
   height: 100%;
 }
 a {
-  color: #e1ff00;
-  transition: color ease-in-out 0.2s;
+  color: blue;
+  transition: all ease-in-out 0.25s;
   text-decoration: none;
 }
 a:hover {
-  color: #ff6600;
+  color: rgb(162, 0, 255);
+  font-weight: 600;
 }
 header {
   text-align: center;
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid;
+  background-color: cornflowerblue;
 }
 main {
   height: 100%;
@@ -37,6 +37,7 @@ main {
   min-width: 200px;
   padding: 25px;
   margin-right: 25px;
+  background-color: aliceblue;
 }
 nav > ul {
   list-style: none;
@@ -48,7 +49,7 @@ nav li {
 }
 
 hr {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 #dynamic-page {
@@ -72,9 +73,15 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-top: 1px solid white;
+  border-top: 2px solid;
+  background-color: cornflowerblue;
 }
 
 .logo {
   height: 25px;
+  filter: invert();
+  transition: transform ease-in-out 0.5s;
+}
+.logo:hover {
+  transform: scale(1.1);
 }

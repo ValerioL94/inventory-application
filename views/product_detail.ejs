@@ -1,0 +1,14 @@
+<%- contentFor('page') %>
+
+<h2>Product: <%= product.name %></h2>
+<p><strong>Description: </strong><%= product.description %></p>
+<p><strong>Category: </strong><a href="<%= product.category.url %>"><%= product.category.name %></a></p>
+<p><strong>Price: </strong><%= product.get_price %></p>
+<% if (product.stock<=5) { %>
+    <p><strong>Stock: <span style="color: red;"><%= product.stock %></span></strong></p>
+<% } else if (product.stock<=15) { %>
+    <p><strong>Stock: <span style="color: orange;"><%= product.stock %></span></strong></p>
+<% } else { %>
+    <p><strong>Stock: <span style="color: green;"><%= product.stock %></span></strong></p>
+    <% } %>
+

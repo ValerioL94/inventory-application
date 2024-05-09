@@ -1,0 +1,12 @@
+<%- contentFor('page') %>
+
+<h2><%= title %></h2>
+<% if (category_list.length) { %>
+<ul class="page-list">
+  <% category_list.forEach(category => { %>
+  <li><a href="<%= category.url %>"><%= category.name %></a></li>
+  <% }) %>
+</ul>
+<% } else { %>
+<p>There are no categories.</p>
+<%} %>

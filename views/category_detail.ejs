@@ -1,0 +1,20 @@
+<%- contentFor('page') %>
+
+<h2>Category: <%= category.name %></h2>
+<div class="detail-list">
+  <h3>Products</h3>
+  <% if (category_products.length) { %>
+  <dl>
+    <% category_products.forEach(product => { %>
+    <dt>
+      <a href="<%= product.url %>"><%= product.name %></a>
+    </dt>
+    <dd>
+      <%= product.description %>
+    </dd>
+    <% }) %>
+  </dl>
+  <% } else { %>
+  <p>This category has no products.</p>
+  <% } %>
+</div>

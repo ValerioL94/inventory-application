@@ -1,0 +1,12 @@
+<%- contentFor('page') %>
+
+<h2><%= title %></h2>
+<% if (product_list.length) { %>
+<ul class="page-list">
+  <% product_list.forEach(product => { %>
+  <li><a href="<%= product.url %>"><%= product.name %></a></li>
+  <% }) %>
+</ul>
+<% } else { %>
+<p>There are no products.</p>
+<%} %>
