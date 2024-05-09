@@ -1,0 +1,11 @@
+<%- contentFor('page') %>
+
+<h2><%= title %>: <%= product.name %></h2>
+
+<p>Do you really want to delete this Product?</p>
+<form method="post">
+  <div class="form-group">
+    <input type="hidden" id="productId" class="form-control" name="productId" value="<%= product._id %>">
+  </div>
+  <button type="submit" class="form-submit">Delete</button>
+</form>

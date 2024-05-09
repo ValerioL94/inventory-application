@@ -93,17 +93,22 @@ exports.product_create_post = [
       });
     } else {
       await product.save();
-      res.redirect('product.url');
+      res.redirect(product.url);
     }
   }),
 ];
 
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
-  res.send('WiP: product delete GET');
+  const product = await Product.findById(req.params.id).exec();
+  if (product === null) {
+    res.redirect('/inventory/products');
+  }
+  res.render('product_delete', { title: 'Delete Product', product });
 });
 
 exports.product_delete_post = asyncHandler(async (req, res, next) => {
-  res.send('WiP: product delete POST');
+  await Product.findByIdAndDelete(req.body.productId);
+  res.redirect('/inventory/products');
 });
 
 exports.product_update_get = asyncHandler(async (req, res, next) => {
