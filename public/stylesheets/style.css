@@ -25,12 +25,19 @@ a:focus {
   color: blue;
   font-weight: 600;
   outline: none;
-  border-bottom: 2px solid blue;
+  padding-left: 5px;
 }
 header {
   text-align: center;
   border-bottom: 2px solid;
   background-color: cornflowerblue;
+}
+header a {
+  color: black;
+}
+header a:hover,
+header a:focus {
+  padding: inherit;
 }
 main {
   height: 100%;
@@ -119,12 +126,15 @@ footer {
   border-top: 2px solid;
   background-color: cornflowerblue;
 }
-
+footer a {
+  transition: transform ease-in-out 0.5s;
+}
+footer a:hover,
+footer a:focus {
+  padding: 0;
+  transform: scale(1.25);
+}
 .logo {
   height: 25px;
   filter: invert();
-  transition: transform ease-in-out 0.5s;
-}
-.logo:hover {
-  transform: scale(1.1);
 }
