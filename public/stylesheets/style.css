@@ -104,13 +104,15 @@ hr {
   width: 80px;
   border-radius: 5px;
   font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
+  color: blue;
 }
 .form-submit:hover,
 .form-submit:focus {
-  font-weight: 600;
-  color: blue;
-  border: 2px solid blue;
+  background-color: blue;
+  color: white;
+  border-color: blue;
   outline: none;
 }
 .errors-list {
