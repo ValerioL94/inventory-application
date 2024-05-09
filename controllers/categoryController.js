@@ -1,6 +1,7 @@
 const Category = require('../models/category');
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require('express-validator');
 
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find().sort({ name: 1 }).exec();
@@ -28,12 +29,41 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
-  res.send('WiP: category create GET');
+  res.render('category_form', { title: 'New Category' });
 });
 
-exports.category_create_post = asyncHandler(async (req, res, next) => {
-  res.send('WiP: category create POST');
-});
+exports.category_create_post = [
+  body('name')
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage('Category must contain at least 3 characters.'),
+  body('description')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ max: 500 })
+    .escape()
+    .withMessage('Description must contains less than 500 characters.'),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
+    if (!errors.isEmpty()) {
+      res.render('category_form', {
+        title: 'New Category',
+        category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await category.save();
+      res.redirect(category.url);
+    }
+  }),
+];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   res.send('WiP: category delete GET');

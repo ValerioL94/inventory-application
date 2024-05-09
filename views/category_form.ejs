@@ -1,0 +1,19 @@
+<%- contentFor('page') %>
+
+<h2><%= title %></h2>
+
+<form method="post">
+  <div class="form-group">
+    <label for="name">Name: </label>
+    <input class="form-control" type="text" id="name" placeholder="Mango" name="name" required value="<%= typeof category==='undefined' ? '' : category.name %>">
+    <label for="description">Description: </label>
+    <textarea rows="8" class="form-control" name="description" id="description" placeholder="A raw mango is 84% water, 15% carbohydrates, 1% protein, and has negligible fat. The energy value per 100g (3.5oz) serving of raw mango is 250 kJ (60 calories). Fresh mango contains only vitamin C and folate in significant amounts of the Daily Value as 44% and 11%, respectively." value="<%= typeof category==='undefined' ? '' : category.description %>"></textarea>
+  </div>
+</form>
+<% if (typeof errors!=='undefined') { %>
+ <ul>
+    <% errors.forEach(error => { %>
+     <li>error.msg</li>
+    <% }) %>
+ </ul>
+<% } %>

@@ -34,7 +34,8 @@ main {
   display: flex;
 }
 #sidebar {
-  min-width: 200px;
+  width: 250px;
+  min-width: 100px;
   padding: 25px;
   margin-right: 25px;
   background-color: aliceblue;
@@ -53,6 +54,7 @@ hr {
 }
 
 #dynamic-page {
+  width: 100%;
   padding: 25px;
 }
 
@@ -66,6 +68,24 @@ hr {
 
 .detail-list dd {
   margin: 0 0 25px;
+}
+
+.form-group {
+  width: 100%;
+}
+.form-control {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 15px;
+  border: 2px solid;
+  border-radius: 7.5px;
+}
+.form-control:hover,
+.form-control:focus {
+  border: 2px solid blue;
+  outline: none;
 }
 
 footer {
