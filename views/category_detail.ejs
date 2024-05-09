@@ -1,6 +1,7 @@
 <%- contentFor('page') %>
 
 <h2>Category: <%= category.name %></h2>
+<p><%= category.description %></p>
 <div class="detail-list">
   <h3>Products</h3>
   <% if (category_products.length) { %>

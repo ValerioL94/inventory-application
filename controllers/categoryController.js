@@ -37,13 +37,13 @@ exports.category_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage('Category must contain at least 3 characters.'),
+    .withMessage('Name must contain at least 3 characters.'),
   body('description')
     .optional({ values: 'falsy' })
     .trim()
     .isLength({ max: 500 })
     .escape()
-    .withMessage('Description must contains less than 500 characters.'),
+    .withMessage('Description must contain less than 500 characters.'),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);

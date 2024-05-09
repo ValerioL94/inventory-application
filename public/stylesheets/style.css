@@ -16,13 +16,15 @@ body {
   height: 100%;
 }
 a {
-  color: blue;
+  color: rgb(70, 70, 255);
   transition: all ease-in-out 0.25s;
   text-decoration: none;
 }
-a:hover {
-  color: rgb(162, 0, 255);
+a:hover,
+a:focus {
+  color: blue;
   font-weight: 600;
+  outline: none;
 }
 header {
   text-align: center;
@@ -80,10 +82,25 @@ hr {
   padding: 5px;
   margin-bottom: 15px;
   border: 2px solid;
-  border-radius: 7.5px;
+  border-radius: 5px;
+  font-size: 0.8rem;
 }
 .form-control:hover,
 .form-control:focus {
+  border: 2px solid blue;
+  outline: none;
+}
+
+.form-submit {
+  height: 30px;
+  width: 80px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+.form-submit:hover,
+.form-submit:focus {
+  font-weight: 600;
+  color: blue;
   border: 2px solid blue;
   outline: none;
 }
