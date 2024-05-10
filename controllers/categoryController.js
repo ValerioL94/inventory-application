@@ -29,7 +29,7 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
-  res.render('category_form', { title: 'New Category' });
+  res.render('category_form', { title: 'New Category', form_type: 'create' });
 });
 
 exports.category_create_post = [
@@ -52,16 +52,15 @@ exports.category_create_post = [
       description: req.body.description,
     });
     if (!errors.isEmpty()) {
-      res.render('category_form', {
+      return res.render('category_form', {
         title: 'New Category',
         category,
         errors: errors.array(),
+        form_type: 'create',
       });
-      return;
-    } else {
-      await category.save();
-      res.redirect(category.url);
     }
+    await category.save();
+    res.redirect(category.url);
   }),
 ];
 
@@ -71,7 +70,7 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
     Product.find({ category: req.params.id }, 'name description').exec(),
   ]);
   if (category === null) {
-    res.redirect('/inventory/categories');
+    return res.redirect('/inventory/categories');
   }
   res.render('category_delete', {
     title: 'Delete Category',
@@ -92,23 +91,21 @@ exports.category_delete_post = [
     ]);
     const errors = validationResult(req);
     if (productsInCategory.length) {
-      res.render('category_delete', {
+      return res.render('category_delete', {
         title: 'Delete Category',
         category,
         category_products: productsInCategory,
       });
-      return;
-    } else if (!errors.isEmpty()) {
-      res.render('category_delete', {
+    }
+    if (!errors.isEmpty()) {
+      return res.render('category_delete', {
         title: 'Delete Category',
         category,
         errors: errors.array(),
       });
-      return;
-    } else {
-      await Category.findByIdAndDelete(req.body.categoryId);
-      res.redirect('/inventory/categories');
     }
+    await Category.findByIdAndDelete(req.body.categoryId);
+    res.redirect('/inventory/categories');
   }),
 ];
 
@@ -123,6 +120,7 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
   res.render('category_form', {
     title: 'Update Category',
     category,
+    form_type: 'update',
   });
 });
 
@@ -148,19 +146,18 @@ exports.category_update_post = [
       _id: req.params.id,
     });
     if (!errors.isEmpty()) {
-      res.render('category_form', {
+      return res.render('category_form', {
         title: 'Update Category',
         category,
         errors: errors.array(),
+        form_type: 'update',
       });
-      return;
-    } else {
-      const updatedCategory = await Category.findByIdAndUpdate(
-        req.params.id,
-        category,
-        {}
-      );
-      res.redirect(updatedCategory.url);
     }
+    const updatedCategory = await Category.findByIdAndUpdate(
+      req.params.id,
+      category,
+      {}
+    );
+    res.redirect(updatedCategory.url);
   }),
 ];

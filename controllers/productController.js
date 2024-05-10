@@ -40,6 +40,7 @@ exports.product_create_get = asyncHandler(async (req, res, next) => {
   res.render('product_form', {
     title: 'New Product',
     categories: allCategories,
+    form_type: 'create',
   });
 });
 
@@ -84,24 +85,23 @@ exports.product_create_post = [
     });
     if (!errors.isEmpty()) {
       const allCategories = await Category.find().sort({ name: 1 }).exec();
-      res.render('product_form', {
+      return res.render('product_form', {
         title: 'New Product',
         categories: allCategories,
         product,
         errors: errors.array(),
+        form_type: 'create',
       });
-      return;
-    } else {
-      await product.save();
-      res.redirect(product.url);
     }
+    await product.save();
+    res.redirect(product.url);
   }),
 ];
 
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id).exec();
   if (product === null) {
-    res.redirect('/inventory/products');
+    return res.redirect('/inventory/products');
   }
   res.render('product_delete', { title: 'Delete Product', product });
 });
@@ -115,16 +115,14 @@ exports.product_delete_post = [
     const errors = validationResult(req);
     const product = await Product.findById(req.params.id).exec();
     if (!errors.isEmpty()) {
-      res.render('product_delete', {
+      return res.render('product_delete', {
         title: 'Delete Product',
         product,
         errors: errors.array(),
       });
-      return;
-    } else {
-      await Product.findByIdAndDelete(req.body.productId);
-      res.redirect('/inventory/products');
     }
+    await Product.findByIdAndDelete(req.body.productId);
+    res.redirect('/inventory/products');
   }),
 ];
 
@@ -143,6 +141,7 @@ exports.product_update_get = asyncHandler(async (req, res, next) => {
     title: 'Update Product',
     product,
     categories: allCategories,
+    form_type: 'update',
   });
 });
 
@@ -193,20 +192,19 @@ exports.product_update_post = [
     });
     if (!errors.isEmpty()) {
       const allCategories = await Category.find().sort({ name: 1 }).exec();
-      res.render('product_form', {
+      return res.render('product_form', {
         title: 'Update Product',
         categories: allCategories,
         product,
         errors: errors.array(),
+        form_type: 'update',
       });
-      return;
-    } else {
-      const updatedProduct = await Product.findByIdAndUpdate(
-        req.params.id,
-        product,
-        {}
-      );
-      res.redirect(updatedProduct.url);
     }
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      product,
+      {}
+    );
+    res.redirect(updatedProduct.url);
   }),
 ];
