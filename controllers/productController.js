@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const adminPassword = process.env.admin_password;
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [allCategories, allProducts] = await Promise.all([
@@ -107,10 +108,10 @@ exports.product_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.product_delete_post = [
-  body('password', 'Wrong password, You don\t have the right.')
+  body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals('IHaveTheRight'),
+    .equals(adminPassword),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const product = await Product.findById(req.params.id).exec();
@@ -176,10 +177,10 @@ exports.product_update_post = [
     .isLength({ min: 1 })
     .isInt({ gt: 0, lt: 101 })
     .escape(),
-  body('password', 'Wrong password, You don\t have the right.')
+  body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals('IHaveTheRight'),
+    .equals(adminPassword),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const product = new Product({

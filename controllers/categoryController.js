@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const adminPassword = process.env.admin_password;
 
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find().sort({ name: 1 }).exec();
@@ -80,10 +81,10 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_delete_post = [
-  body('password', 'Wrong password, You don\t have the right.')
+  body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals('IHaveTheRight'),
+    .equals(adminPassword),
   asyncHandler(async (req, res, next) => {
     const [category, productsInCategory] = await Promise.all([
       Category.findById(req.params.id).exec(),
@@ -134,10 +135,10 @@ exports.category_update_post = [
     .trim()
     .isLength({ max: 500 })
     .escape(),
-  body('password', 'Wrong password, You don\t have the right.')
+  body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals('IHaveTheRight'),
+    .equals(adminPassword),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const category = new Category({
