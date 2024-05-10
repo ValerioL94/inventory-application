@@ -152,12 +152,14 @@ exports.product_update_post = [
     .trim()
     .isLength({ min: 2 })
     .escape()
+    .unescape('&#x27;')
     .withMessage('Name must contain at least 2 characters'),
   body('description')
     .optional({ values: 'falsy' })
     .trim()
     .isLength({ max: 500 })
     .escape()
+    .unescape('&#x27;')
     .withMessage('Description must contain less than 500 characters'),
   body('category', 'Category must not be empty')
     .trim()
