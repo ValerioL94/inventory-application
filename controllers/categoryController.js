@@ -80,23 +80,37 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  const [category, productsInCategory] = await Promise.all([
-    Category.findById(req.params.id).exec(),
-    Product.find({ category: req.params.id }, 'name description').exec(),
-  ]);
-  if (productsInCategory.length) {
-    res.render('category_delete', {
-      title: 'Delete Category',
-      category,
-      category_products: productsInCategory,
-    });
-    return;
-  } else {
-    await Category.findByIdAndDelete(req.body.categoryId);
-    res.redirect('/inventory/categories');
-  }
-});
+exports.category_delete_post = [
+  body('password', 'Wrong password, You don\t have the right.')
+    .trim()
+    .escape()
+    .equals('IHaveTheRight'),
+  asyncHandler(async (req, res, next) => {
+    const [category, productsInCategory] = await Promise.all([
+      Category.findById(req.params.id).exec(),
+      Product.find({ category: req.params.id }, 'name description').exec(),
+    ]);
+    const errors = validationResult(req);
+    if (productsInCategory.length) {
+      res.render('category_delete', {
+        title: 'Delete Category',
+        category,
+        category_products: productsInCategory,
+      });
+      return;
+    } else if (!errors.isEmpty()) {
+      res.render('category_delete', {
+        title: 'Delete Category',
+        category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Category.findByIdAndDelete(req.body.categoryId);
+      res.redirect('/inventory/categories');
+    }
+  }),
+];
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
   const category = await Category.findById(req.params.id).exec();
@@ -113,18 +127,19 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_update_post = [
-  body('name')
+  body('name', 'Name must contain at least 3 characters.')
     .trim()
     .isLength({ min: 3 })
-    .escape()
-    .withMessage('Name must contain at least 3 characters.'),
-  body('description')
+    .escape(),
+  body('description', 'Description must contain less than 500 characters.')
     .optional({ values: 'falsy' })
     .trim()
     .isLength({ max: 500 })
+    .escape(),
+  body('password', 'Wrong password, You don\t have the right.')
+    .trim()
     .escape()
-    .withMessage('Description must contain less than 500 characters.'),
-
+    .equals('IHaveTheRight'),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const category = new Category({
