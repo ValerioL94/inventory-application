@@ -2,7 +2,6 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
-const { category_list } = require('./categoryController');
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [allCategories, allProducts] = await Promise.all([
