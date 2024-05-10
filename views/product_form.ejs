@@ -33,6 +33,12 @@
       <label for="stock">Stock: </label>
       <input class="form-control" type="number" id="stock" placeholder="8" name="stock" required value="<%= typeof product==='undefined' ? '' : product.stock %>">
     </div>
+    <% if (typeof product!=='undefined') { %>
+    <div class="form-group">
+      <label for="password">Password: </label>
+      <input class="form-control" type="password" required name="password" id="password" placeholder="Enter admin password">
+    </div>
+    <% } %>
   </div>
   <button class="form-submit" type="submit">Submit</button>
 </form>

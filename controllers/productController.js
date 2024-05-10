@@ -107,10 +107,27 @@ exports.product_delete_get = asyncHandler(async (req, res, next) => {
   res.render('product_delete', { title: 'Delete Product', product });
 });
 
-exports.product_delete_post = asyncHandler(async (req, res, next) => {
-  await Product.findByIdAndDelete(req.body.productId);
-  res.redirect('/inventory/products');
-});
+exports.product_delete_post = [
+  body('password', 'Wrong password, You don\t have the right.')
+    .trim()
+    .escape()
+    .equals('IHaveTheRight'),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const product = await Product.findById(req.params.id).exec();
+    if (!errors.isEmpty()) {
+      res.render('product_delete', {
+        title: 'Delete Product',
+        product,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Product.findByIdAndDelete(req.body.productId);
+      res.redirect('/inventory/products');
+    }
+  }),
+];
 
 exports.product_update_get = asyncHandler(async (req, res, next) => {
   const [product, allCategories] = await Promise.all([
@@ -159,7 +176,10 @@ exports.product_update_post = [
     .isLength({ min: 1 })
     .isInt({ gt: 0, lt: 101 })
     .escape(),
-
+  body('password', 'Wrong password, You don\t have the right.')
+    .trim()
+    .escape()
+    .equals('IHaveTheRight'),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const product = new Product({
