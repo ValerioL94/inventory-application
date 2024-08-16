@@ -3,18 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose = require('mongoose');
-const mongoDB = process.env.MONGODB_URI;
 const expressLayouts = require('express-ejs-layouts');
 
 const indexRouter = require('./routes/index');
 const inventoryRouter = require('./routes/inventory');
 const app = express();
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
