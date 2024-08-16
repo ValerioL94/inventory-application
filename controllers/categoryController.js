@@ -10,11 +10,11 @@ exports.category_list = asyncHandler(async (req, res, next) => {
     category_list: categories,
   });
 });
-/*
+
 exports.category_detail = asyncHandler(async (req, res, next) => {
   const [category, productsInCategory] = await Promise.all([
-    Category.findById(req.params.id).exec(),
-    Product.find({ category: req.params.id }, 'name description').exec(),
+    db.getCategoryDetails(req.params.id),
+    db.getProductsInCategory(req.params.id),
   ]);
   if (category === null) {
     const err = new Error('Category not found');
@@ -22,12 +22,12 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
   res.render('category_detail', {
-    title: 'Category Detail',
-    category,
-    category_products: productsInCategory,
+    title: category.name,
+    category: category,
+    products: productsInCategory,
   });
 });
-
+/*
 exports.category_create_get = asyncHandler(async (req, res, next) => {
   res.render('category_form', { title: 'New Category', form_type: 'create' });
 });

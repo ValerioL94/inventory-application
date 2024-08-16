@@ -4,11 +4,11 @@
 <p><%= category.description %></p>
 <div class="detail-list">
   <h3>Products</h3>
-  <% if (category_products.length) { %>
+  <% if (products.length) { %>
   <dl>
-    <% category_products.forEach(product => { %>
+    <% products.forEach(product => { %>
     <dt>
-      <a href="<%= product.url %>"><%= product.name %></a>
+      <a href="/products/<%= product.id %>"><%= product.name %></a>
     </dt>
     <dd>
       <%= product.description %>
@@ -21,8 +21,8 @@
 </div>
 <hr>
 <p>
-  <a href="<%= category.url %>/delete">Delete Category</a>
+  <a href="/categories/<%= category.id %>/delete">Delete Category</a>
 </p>
 <p>
-  <a href="<%= category.url %>/update">Update Category</a>
+  <a href="/categories/<%= category.id %>/update">Update Category</a>
 </p>
