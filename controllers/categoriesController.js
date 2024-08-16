@@ -1,6 +1,5 @@
-const Category = require('../models/category');
-const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
+const db = require('../db/queries');
 const { body, validationResult } = require('express-validator');
 const adminPassword = process.env.admin_password;
 
