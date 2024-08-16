@@ -10,6 +10,7 @@ router.get('/:id/delete', product_controller.product_delete_get);
 router.post('/:id/delete', product_controller.product_delete_post);
 router.get('/product/:id/update', product_controller.product_update_get);
 router.post('/:id/update', product_controller.product_update_post);
-router.get('/:id', product_controller.product_detail);
 */
+router.get('/:id', product_controller.product_detail);
+
 module.exports = router;

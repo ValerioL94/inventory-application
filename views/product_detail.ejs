@@ -2,8 +2,8 @@
 
 <h2>Product: <%= product.name %></h2>
 <p><strong>Description: </strong><%= product.description %></p>
-<p><strong>Category: </strong><a href="<%= product.category.url %>"><%= product.category.name %></a></p>
-<p><strong>Price: </strong><%= product.get_price %></p>
+<p><strong>Category: </strong><a href="/categories/<%= product.category_id %>"><%= product.category %></a></p>
+<p><strong>Price: </strong>€<%= product.price %></p>
 <% if (product.stock<=5) { %>
 <p><strong>Stock: <span style="color: red;"><%= product.stock %></span></strong></p>
 <% } else if (product.stock<=15) { %>
@@ -13,8 +13,8 @@
 <% } %>
 <hr>
 <p>
-  <a href="<%= product.url %>/delete">Delete Product</a>
+  <a href="/products/<%= product.id %>/delete">Delete Product</a>
 </p>
 <p>
-  <a href="<%= product.url %>/update">Update Product</a>
+  <a href="/products/<%= product.id %>/update">Update Product</a>
 </p>

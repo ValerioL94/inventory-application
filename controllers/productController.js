@@ -19,19 +19,18 @@ exports.product_list = asyncHandler(async (req, res, next) => {
   const products = await db.getProducts();
   res.render('product_list', { title: 'Products', product_list: products });
 });
-/*
+
 exports.product_detail = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id)
-    .populate('category')
-    .exec();
+  const product = await db.getProductDetails(req.params.id);
   if (product === null) {
     const err = new Error('Product not found');
     err.status = 404;
     return next(err);
   }
-  res.render('product_detail', { title: product.name, product });
+  console.log(product);
+  res.render('product_detail', { title: product.name, product: product });
 });
-
+/*
 exports.product_create_get = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find().sort({ name: 1 }).exec();
   res.render('product_form', {
