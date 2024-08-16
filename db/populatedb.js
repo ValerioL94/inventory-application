@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR ( 100 ) NOT NULL,
   description TEXT,
-  category INTEGER REFERENCES categories,
+  category_id INTEGER REFERENCES categories,
   price REAL,
   stock INTEGER
 );
