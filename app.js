@@ -6,8 +6,8 @@ const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 
 const indexRouter = require('./routes/indexRouter');
-const categoriesRouter = require('./routes/categoriesRouter');
-const productsRouter = require('./routes/productsRouter');
+const categoryRouter = require('./routes/categoryRouter');
+const productRouter = require('./routes/productRouter');
 const app = express();
 
 // view engine setup
@@ -22,8 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/products', productsRouter);
-app.use('/categories', categoriesRouter);
+app.use('/products', productRouter);
+app.use('/categories', categoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
