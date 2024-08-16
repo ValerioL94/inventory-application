@@ -4,7 +4,7 @@
 <% if (product_list.length) { %>
 <ul class="page-list">
   <% product_list.forEach(product => { %>
-  <li><a href="<%= product.url %>"><%= product.name %></a></li>
+  <li><a href="/products/<%= product.id %>"><%= product.name %></a></li>
   <% }) %>
 </ul>
 <% } else { %>
