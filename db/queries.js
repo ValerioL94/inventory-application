@@ -36,7 +36,9 @@ async function updateCategory(category) {
     [category.name, category.description, category.id]
   );
 }
-// deleteCategories;
+async function deleteCategory(id) {
+  await pool.query('DELETE FROM categories WHERE id = $1;', [id]);
+}
 
 // Product queries
 async function countProducts() {
@@ -45,14 +47,12 @@ async function countProducts() {
   );
   return rows[0].products;
 }
-
 async function getProducts() {
   const { rows } = await pool.query(
     'SELECT id, name FROM products ORDER BY name'
   );
   return rows;
 }
-
 async function getProductDetails(id) {
   const { rows } = await pool.query(
     'SELECT products.id, products.name, products.description, products.price, products.stock, categories.id as category_id, categories.name as category FROM products JOIN categories ON products.category_id = categories.id WHERE products.id = $1;',
@@ -60,7 +60,6 @@ async function getProductDetails(id) {
   );
   return rows[0];
 }
-
 async function getProductsInCategory(id) {
   const { rows } = await pool.query(
     'SELECT products.id, products.name, products.description, products.price, products.stock FROM products WHERE products.category_id = $1;',
@@ -68,7 +67,6 @@ async function getProductsInCategory(id) {
   );
   return rows;
 }
-
 async function insertProduct(product) {
   await pool.query(
     'INSERT INTO products (name, description, category_id, price, stock) VALUES ($1, $2, $3, $4, $5);',
@@ -81,7 +79,6 @@ async function insertProduct(product) {
     ]
   );
 }
-
 async function updateProduct(product) {
   await pool.query(
     'UPDATE products SET (name, description, category_id, price, stock) = ($1, $2, $3, $4, $5) WHERE products.id = $6;',
@@ -95,7 +92,9 @@ async function updateProduct(product) {
     ]
   );
 }
-// deleteProducts;
+async function deleteProduct(id) {
+  await pool.query('DELETE FROM products WHERE id = $1;', [id]);
+}
 
 module.exports = {
   countCategories,
@@ -103,10 +102,12 @@ module.exports = {
   getCategoryDetails,
   insertCategory,
   updateCategory,
+  deleteCategory,
   countProducts,
   getProducts,
   getProductDetails,
   getProductsInCategory,
   insertProduct,
   updateProduct,
+  deleteProduct,
 };
