@@ -29,10 +29,10 @@ async function getCategoryDetails(id) {
   return rows[0];
 }
 
-async function insertCategory(name, description) {
+async function insertCategory(category) {
   await pool.query(
     'INSERT INTO categories (name, description) VALUES ($1, $2);',
-    [name, description]
+    [category.name, category.description]
   );
 }
 async function countProducts() {
@@ -65,6 +65,19 @@ async function getProductsInCategory(id) {
   return rows;
 }
 
+async function insertProduct(product) {
+  await pool.query(
+    'INSERT INTO products (name, description, category_id, price, stock) VALUES ($1, $2, $3, $4, $5);',
+    [
+      product.name,
+      product.description,
+      product.category_id,
+      product.price,
+      product.stock,
+    ]
+  );
+}
+
 module.exports = {
   countCategories,
   getCategories,
@@ -74,4 +87,5 @@ module.exports = {
   getProducts,
   getProductDetails,
   getProductsInCategory,
+  insertProduct,
 };
