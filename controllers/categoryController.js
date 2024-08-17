@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../db/queries');
 const { body, validationResult } = require('express-validator');
-const adminPassword = process.env.admin_password;
+const { ADMIN_PASSWORD } = process.env;
 
 exports.category_list = asyncHandler(async (req, res, next) => {
   const categories = await db.getCategories();
@@ -63,6 +63,56 @@ exports.category_create_post = [
     res.redirect('/categories');
   }),
 ];
+
+exports.category_update_get = asyncHandler(async (req, res, next) => {
+  const category = await db.getCategoryDetails(req.params.id);
+  console.log(category);
+  if (category === null) {
+    const err = new Error('Category not found');
+    err.status = 404;
+    return next(err);
+  }
+  res.render('category_form', {
+    title: 'Update Category',
+    category,
+    form_type: 'update',
+  });
+});
+
+exports.category_update_post = [
+  body('name', 'Name must contain at least 3 characters.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'Description must contain less than 500 characters.')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ max: 500 })
+    .escape(),
+  body('password', "Wrong password, You don't have the right.")
+    .trim()
+    .escape()
+    .equals(ADMIN_PASSWORD),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = {
+      name: req.body.name,
+      description: req.body.description,
+      id: req.params.id,
+    };
+    if (!errors.isEmpty()) {
+      return res.render('category_form', {
+        title: 'Update Category',
+        category,
+        errors: errors.array(),
+        form_type: 'update',
+      });
+    }
+    await db.updateCategory(category);
+    res.redirect('/categories');
+  }),
+];
+
 /*
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   const [category, productsInCategory] = await Promise.all([
@@ -106,59 +156,6 @@ exports.category_delete_post = [
     }
     await Category.findByIdAndDelete(req.body.categoryId);
     res.redirect('/inventory/categories');
-  }),
-];
-
-exports.category_update_get = asyncHandler(async (req, res, next) => {
-  const category = await Category.findById(req.params.id).exec();
-
-  if (category === null) {
-    const err = new Error('Category not found');
-    err.status = 404;
-    return next(err);
-  }
-  res.render('category_form', {
-    title: 'Update Category',
-    category,
-    form_type: 'update',
-  });
-});
-
-exports.category_update_post = [
-  body('name', 'Name must contain at least 3 characters.')
-    .trim()
-    .isLength({ min: 3 })
-    .escape(),
-  body('description', 'Description must contain less than 500 characters.')
-    .optional({ values: 'falsy' })
-    .trim()
-    .isLength({ max: 500 })
-    .escape(),
-  body('password', "Wrong password, You don't have the right.")
-    .trim()
-    .escape()
-    .equals(adminPassword),
-  asyncHandler(async (req, res, next) => {
-    const errors = validationResult(req);
-    const category = new Category({
-      name: req.body.name,
-      description: req.body.description,
-      _id: req.params.id,
-    });
-    if (!errors.isEmpty()) {
-      return res.render('category_form', {
-        title: 'Update Category',
-        category,
-        errors: errors.array(),
-        form_type: 'update',
-      });
-    }
-    const updatedCategory = await Category.findByIdAndUpdate(
-      req.params.id,
-      category,
-      {}
-    );
-    res.redirect(updatedCategory.url);
   }),
 ];
 
