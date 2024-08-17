@@ -5,6 +5,9 @@ const { ADMIN_PASSWORD } = process.env;
 
 exports.category_list = asyncHandler(async (req, res, next) => {
   const categories = await db.getCategories();
+  if (categories === null) {
+    return res.redirect('/');
+  }
   res.render('category_list', {
     title: 'Categories',
     category_list: categories,
@@ -66,7 +69,6 @@ exports.category_create_post = [
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
   const category = await db.getCategoryDetails(req.params.id);
-  console.log(category);
   if (category === null) {
     const err = new Error('Category not found');
     err.status = 404;
@@ -113,19 +115,18 @@ exports.category_update_post = [
   }),
 ];
 
-/*
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   const [category, productsInCategory] = await Promise.all([
-    Category.findById(req.params.id).exec(),
-    Product.find({ category: req.params.id }, 'name description').exec(),
+    db.getCategoryDetails(req.params.id),
+    db.getProductsInCategory(req.params.id),
   ]);
   if (category === null) {
-    return res.redirect('/inventory/categories');
+    return res.redirect('/categories');
   }
   res.render('category_delete', {
     title: 'Delete Category',
     category,
-    category_products: productsInCategory,
+    products: productsInCategory,
   });
 });
 
@@ -133,18 +134,18 @@ exports.category_delete_post = [
   body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals(adminPassword),
+    .equals(ADMIN_PASSWORD),
   asyncHandler(async (req, res, next) => {
     const [category, productsInCategory] = await Promise.all([
-      Category.findById(req.params.id).exec(),
-      Product.find({ category: req.params.id }, 'name description').exec(),
+      db.getCategoryDetails(req.params.id),
+      db.getProductsInCategory(req.params.id),
     ]);
     const errors = validationResult(req);
     if (productsInCategory.length) {
       return res.render('category_delete', {
         title: 'Delete Category',
         category,
-        category_products: productsInCategory,
+        products: productsInCategory,
       });
     }
     if (!errors.isEmpty()) {
@@ -154,9 +155,7 @@ exports.category_delete_post = [
         errors: errors.array(),
       });
     }
-    await Category.findByIdAndDelete(req.body.categoryId);
-    res.redirect('/inventory/categories');
+    await db.deleteCategory(req.body.categoryId);
+    res.redirect('/categories');
   }),
 ];
-
-*/

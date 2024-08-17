@@ -2,14 +2,14 @@
 
 <h2><%= title %>: <%= category.name %></h2>
 
-<% if (typeof category_products!=='undefined' && category_products.length) { %>
+<% if (typeof products!=='undefined' && products.length) { %>
 <p class="errors-list"><strong>Delete the following products before attempting to delete this category.</strong></p>
 <div class="detail-list">
   <h3>Products</h3>
   <dl>
-    <% category_products.forEach(product => { %>
+    <% products.forEach(product => { %>
     <dt>
-      <a href="<%= product.url %>"><%= product.name %></a>
+      <a href="/products/<%= product.id %>"><%= product.name %></a>
     </dt>
     <dd>
       <%= product.description %>
@@ -21,7 +21,7 @@
 <p>Do you really want to delete this Category?</p>
 <form method="post">
   <div class="form-group">
-    <input type="hidden" id="categoryId" class="form-control" name="categoryId" value="<%= category._id %>">
+    <input type="hidden" id="categoryId" class="form-control" name="categoryId" value="<%= category.id %>">
     <label for="password">Password: </label>
     <input class="form-control" type="password" required name="password" id="password" placeholder="Enter admin password">
   </div>

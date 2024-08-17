@@ -32,6 +32,9 @@ exports.product_detail = asyncHandler(async (req, res, next) => {
 
 exports.product_create_get = asyncHandler(async (req, res, next) => {
   const categories = await db.getCategories();
+  if (categories === null) {
+    return res.redirect('/products');
+  }
   res.render('product_form', {
     title: 'New Product',
     categories,
@@ -102,7 +105,6 @@ exports.product_update_get = asyncHandler(async (req, res, next) => {
     db.getProductDetails(req.params.id),
     db.getCategories(),
   ]);
-
   if (product === null) {
     const err = new Error('Product not found');
     err.status = 404;
