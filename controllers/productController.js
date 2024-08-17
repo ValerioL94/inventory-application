@@ -179,11 +179,11 @@ exports.product_update_post = [
     res.redirect('/products');
   }),
 ];
-/*
+
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id).exec();
+  const product = await db.getProductDetails(req.params.id);
   if (product === null) {
-    return res.redirect('/inventory/products');
+    return res.redirect('/products');
   }
   res.render('product_delete', { title: 'Delete Product', product });
 });
@@ -192,10 +192,10 @@ exports.product_delete_post = [
   body('password', "Wrong password, You don't have the right.")
     .trim()
     .escape()
-    .equals(adminPassword),
+    .equals(ADMIN_PASSWORD),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    const product = await Product.findById(req.params.id).exec();
+    const product = await db.getProductDetails(req.params.id);
     if (!errors.isEmpty()) {
       return res.render('product_delete', {
         title: 'Delete Product',
@@ -203,9 +203,7 @@ exports.product_delete_post = [
         errors: errors.array(),
       });
     }
-    await Product.findByIdAndDelete(req.body.productId);
-    res.redirect('/inventory/products');
+    await db.deleteProduct(req.body.productId);
+    res.redirect('/products');
   }),
 ];
-
-*/
