@@ -59,7 +59,7 @@ exports.category_create_post = [
         form_type: 'create',
       });
     }
-    await db.insertCategory(category.name, category.description);
+    await db.insertCategory(category);
     res.redirect('/categories');
   }),
 ];

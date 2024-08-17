@@ -27,15 +27,14 @@ exports.product_detail = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  console.log(product);
-  res.render('product_detail', { title: product.name, product: product });
+  res.render('product_detail', { title: product.name, product });
 });
-/*
+
 exports.product_create_get = asyncHandler(async (req, res, next) => {
-  const allCategories = await Category.find().sort({ name: 1 }).exec();
+  const categories = await db.getCategories();
   res.render('product_form', {
     title: 'New Product',
-    categories: allCategories,
+    categories,
     form_type: 'create',
   });
 });
@@ -52,14 +51,18 @@ exports.product_create_post = [
     .isLength({ max: 500 })
     .escape()
     .withMessage('Description must contain less than 500 characters'),
-  body('category', 'Category must not be empty')
+  body('category', 'Please select a valid category')
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('price', 'Minimum price 1, maximum price 100, numbers only')
+  body(
+    'price',
+    'Minimum price 1, maximum price 100, numbers only, max 2 decimals'
+  )
     .trim()
     .isLength({ min: 1 })
-    .isInt({ gt: 0, lt: 101 })
+    .toFloat()
+    .isFloat({ min: 0.01, max: 100.99 })
     .escape(),
   body(
     'stock',
@@ -67,33 +70,33 @@ exports.product_create_post = [
   )
     .trim()
     .isLength({ min: 1 })
-    .isInt({ gt: 0, lt: 101 })
+    .isInt({ min: 0, max: 100 })
     .escape(),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    const product = new Product({
+    const product = {
       name: req.body.name,
       description: req.body.description,
-      category: req.body.category,
+      category_id: req.body.category,
       price: req.body.price,
       stock: req.body.stock,
-    });
+    };
     if (!errors.isEmpty()) {
-      const allCategories = await Category.find().sort({ name: 1 }).exec();
+      const categories = await db.getCategories();
       return res.render('product_form', {
         title: 'New Product',
-        categories: allCategories,
+        categories,
         product,
         errors: errors.array(),
         form_type: 'create',
       });
     }
-    await product.save();
-    res.redirect(product.url);
+    await db.insertProduct(product);
+    res.redirect('/products');
   }),
 ];
-
+/*
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id).exec();
   if (product === null) {

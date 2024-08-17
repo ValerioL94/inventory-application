@@ -14,24 +14,24 @@
         <option value="">--Please select a category--</option>
         <% categories.forEach(category => { %>
         <% if (typeof product!=='undefined') { %>
-        <% if (category._id.toString()===product.category._id.toString()) { %>
-        <option value="<%= category._id %>" selected><%= category.name %></option>
+        <% if (parseInt(category.id)===parseInt(product.category_id)) { %>
+        <option value="<%= category.id %>" selected><%= category.name %></option>
         <% } else { %>
-        <option value="<%= category._id %>"><%= category.name %></option>
+        <option value="<%= category.id %>"><%= category.name %></option>
         <% } %>
         <% } else { %>
-        <option value="<%= category._id %>"><%= category.name %></option>
+        <option value="<%= category.id %>"><%= category.name %></option>
         <% } %>
         <% }) %>
       </select>
     </div>
     <div class="form-group">
       <label for="price">Price in euros: </label>
-      <input class="form-control" type="number" id="price" placeholder="5" name="price" required value="<%= typeof product==='undefined' ? '' : product.price %>">
+      <input class="form-control" type="number" step="0.01" min="0" id="price" placeholder="3.99" name="price" required value="<%= typeof product==='undefined' ? '' : product.price %>">
     </div>
     <div class="form-group">
       <label for="stock">Stock: </label>
-      <input class="form-control" type="number" id="stock" placeholder="8" name="stock" required value="<%= typeof product==='undefined' ? '' : product.stock %>">
+      <input class="form-control" type="number" id="stock" min="0" placeholder="8" name="stock" required value="<%= typeof product==='undefined' ? '' : product.stock %>">
     </div>
     <% if (form_type==='update') { %>
     <div class="form-group">
