@@ -27,6 +27,7 @@ a:focus {
   outline: none;
   padding-left: 5px;
 }
+
 header {
   text-align: center;
   border-bottom: 2px solid;
@@ -44,32 +45,55 @@ main {
   display: flex;
 }
 #sidebar {
-  width: 250px;
-  min-width: 100px;
+  width: 25%;
+  max-width: 250px;
   padding: 25px;
-  margin-right: 25px;
-  background-color: aliceblue;
+  margin-right: 3px;
+  box-shadow: 0px 5px 10px 0px black;
 }
-nav > ul {
+ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 nav li {
   margin: 25px 0;
+  border: 1px solid gray;
+  border-radius: 10px;
+  box-shadow: -3px 3px 5px 0px gray;
+}
+
+nav a {
+  display: block;
+  border-radius: 10px;
+  padding: 5px 5px 5px 15px;
+}
+nav a:hover {
+  background-color: blue;
+  color: white;
+  padding: 5px 5px 5px 20px;
 }
 
 hr {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: transparent;
 }
 
 #dynamic-page {
   width: 100%;
   padding: 25px;
+  background-color: antiquewhite;
 }
 
+.card {
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: white;
+  padding: 25px;
+  box-shadow: -3px 3px 10px -3px;
+}
 .page-list li {
-  margin: 15px 0;
+  border-bottom: 1px solid black;
+  margin: 25px 0;
 }
 
 .detail-list {
@@ -81,7 +105,7 @@ hr {
 }
 
 .form-group {
-  width: 100%;
+  max-width: 900px;
 }
 .form-control {
   box-sizing: border-box;
@@ -138,4 +162,23 @@ footer a:focus {
 }
 .logo {
   height: 25px;
+}
+
+@media screen and (max-width: 425px) {
+  main {
+    flex-direction: column;
+    height: auto;
+  }
+  #sidebar {
+    width: auto;
+    max-width: none;
+    box-shadow: none;
+    border-bottom: 1px solid black;
+  }
+  #dynamic-page {
+    width: auto;
+  }
+  nav li {
+    margin: 5px 0;
+  }
 }
