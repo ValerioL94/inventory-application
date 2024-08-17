@@ -27,7 +27,7 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
     products: productsInCategory,
   });
 });
-/*
+
 exports.category_create_get = asyncHandler(async (req, res, next) => {
   res.render('category_form', { title: 'New Category', form_type: 'create' });
 });
@@ -47,10 +47,10 @@ exports.category_create_post = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    const category = new Category({
+    const category = {
       name: req.body.name,
       description: req.body.description,
-    });
+    };
     if (!errors.isEmpty()) {
       return res.render('category_form', {
         title: 'New Category',
@@ -59,11 +59,11 @@ exports.category_create_post = [
         form_type: 'create',
       });
     }
-    await category.save();
-    res.redirect(category.url);
+    await db.insertCategory(category.name, category.description);
+    res.redirect('/categories');
   }),
 ];
-
+/*
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   const [category, productsInCategory] = await Promise.all([
     Category.findById(req.params.id).exec(),

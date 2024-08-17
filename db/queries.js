@@ -1,6 +1,5 @@
 const pool = require('./pool');
 
-// insertCategories;
 // updateCategories;
 // deleteCategories;
 
@@ -30,14 +29,12 @@ async function getCategoryDetails(id) {
   return rows[0];
 }
 
-async function getProductsInCategory(id) {
-  const { rows } = await pool.query(
-    'SELECT products.id, products.name, products.description, products.price, products.stock FROM products WHERE products.category_id = $1;',
-    [id]
+async function insertCategory(name, description) {
+  await pool.query(
+    'INSERT INTO categories (name, description) VALUES ($1, $2);',
+    [name, description]
   );
-  return rows;
 }
-
 async function countProducts() {
   const { rows } = await pool.query(
     'SELECT COUNT(*) AS products FROM products'
@@ -59,20 +56,22 @@ async function getProductDetails(id) {
   );
   return rows[0];
 }
-// async function insertMessages(username, comment) {
-//   await pool.query('INSERT INTO messages (username, comment) VALUES ($1, $2)', [
-//     username,
-//     comment,
-//   ]);
-// }
+
+async function getProductsInCategory(id) {
+  const { rows } = await pool.query(
+    'SELECT products.id, products.name, products.description, products.price, products.stock FROM products WHERE products.category_id = $1;',
+    [id]
+  );
+  return rows;
+}
 
 module.exports = {
   countCategories,
   getCategories,
   getCategoryDetails,
-  getProductsInCategory,
-  getProductDetails,
+  insertCategory,
   countProducts,
   getProducts,
   getProductDetails,
+  getProductsInCategory,
 };
