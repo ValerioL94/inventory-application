@@ -1,12 +1,6 @@
 const pool = require('./pool');
 
-// updateCategories;
-// deleteCategories;
-
-// insertProducts;
-// updateProducts;
-// deleteProducts;
-
+// Category queries
 async function countCategories() {
   const { rows } = await pool.query(
     'SELECT COUNT(*) AS categories FROM categories'
@@ -35,6 +29,16 @@ async function insertCategory(category) {
     [category.name, category.description]
   );
 }
+
+async function updateCategory(category) {
+  await pool.query(
+    'UPDATE categories SET (name, description) = ($1, $2) WHERE categories.id = $3;',
+    [category.name, category.description, category.id]
+  );
+}
+// deleteCategories;
+
+// Product queries
 async function countProducts() {
   const { rows } = await pool.query(
     'SELECT COUNT(*) AS products FROM products'
@@ -78,14 +82,28 @@ async function insertProduct(product) {
   );
 }
 
+async function updateProduct(product) {
+  'UPDATE products SET (name, description, price, stock) = ($1, $2, $3, $4) WHERE products.id = $5;',
+    [
+      product.name,
+      product.description,
+      product.price,
+      product.stock,
+      product.id,
+    ];
+}
+// deleteProducts;
+
 module.exports = {
   countCategories,
   getCategories,
   getCategoryDetails,
   insertCategory,
+  updateCategory,
   countProducts,
   getProducts,
   getProductDetails,
   getProductsInCategory,
   insertProduct,
+  updateProduct,
 };
