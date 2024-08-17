@@ -83,14 +83,17 @@ async function insertProduct(product) {
 }
 
 async function updateProduct(product) {
-  'UPDATE products SET (name, description, price, stock) = ($1, $2, $3, $4) WHERE products.id = $5;',
+  await pool.query(
+    'UPDATE products SET (name, description, category_id, price, stock) = ($1, $2, $3, $4, $5) WHERE products.id = $6;',
     [
       product.name,
       product.description,
+      product.category_id,
       product.price,
       product.stock,
       product.id,
-    ];
+    ]
+  );
 }
 // deleteProducts;
 
