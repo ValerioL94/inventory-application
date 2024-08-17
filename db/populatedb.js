@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 const { Client } = require('pg');
-require('dotenv').config();
 const { CONNECTION_STRING } = process.env;
 
 const SQL1 = `
